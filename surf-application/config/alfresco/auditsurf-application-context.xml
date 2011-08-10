@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+* Copyright (C) 2011 Atol Conseils et Développements.
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301, USA. -->
+
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+   
+   <!-- Override the config source to include AuditSurf config -->
+   <bean id="webframework.configsource" class="org.springframework.extensions.config.source.UrlConfigSource">
+      <constructor-arg>
+         <list>
+            <!-- Spring Web Scripts -->
+            <value>classpath:org/springframework/extensions/webscripts/spring-webscripts-config.xml</value>
+            <value>classpath:META-INF/spring-webscripts-config-custom.xml</value>
+            <value>jar:*!/META-INF/spring-webscripts-config-custom.xml</value>
+            
+            <!-- Spring Surf -->
+            <value>classpath:org/springframework/extensions/surf/spring-surf-config.xml</value>
+            <value>classpath:org/springframework/extensions/surf/spring-surf-config-remote.xml</value>
+            <value>classpath:META-INF/spring-surf-config-custom.xml</value>
+            <value>jar:*!/META-INF/spring-surf-config-custom.xml</value>
+            
+            <!-- AuditSurf Specific Configuration -->
+            <value>classpath:alfresco/web-framework-config-application.xml</value>
+            
+            <!-- Surf Autowire Support -->
+            <value>webapp:WEB-INF/surf.xml</value>
+         </list>
+      </constructor-arg>
+   </bean>
+   
+   <!-- Override WebScript Messages - add AuditSurf application messages -->
+   <bean id="webscripts.resources" class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent">
+      <property name="resourceBundles">
+         <list>
+            <value>alfresco.messages.auditsurf</value>
+            <value>alfresco.messages.webscripts</value>
+         </list>
+      </property>
+   </bean>
+   
+   <!-- Override Web Framework Abstract Handler Mappings -->
+   <bean id="webframeworkHandlerMappings" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" abstract="true">
+      <property name="interceptors">
+         <list>
+            <ref bean="requestContextInterceptor"/>
+            <ref bean="themeInterceptor"/>
+         </list>
+      </property>
+      <property name="mappings">
+         <value>
+            /system/**=remoteController
+            /proxy/**=endpointController
+            /resource/**=resourceController
+            /dologin/**=loginController
+            /dologout/**=logoutController
+         </value>
+      </property>
+   </bean>
+   
+   <!-- "no-component" processor -->
+   <bean id="webframework.rendition.processor.nocomponent" class="org.springframework.extensions.surf.site.EmptyRegionRenderer" />
+
+   <!--                             -->
+   <!--  Web Script Implementations -->
+   <!--                             -->
+   
+   <!--  I18N resources and messages Web Script -->
+   <bean id="webscript.org.springframework.extensions.messages.get" parent="webscript" class="org.alfresco.web.scripts.MessagesWebScript" />
+</beans>

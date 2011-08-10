@@ -1,0 +1,174 @@
+/**
+* Copyright (C) 2011 Atol Conseils et Développements.
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+* 02110-1301, USA. **/
+
+html{
+	color:#000;
+	background:#B4B4B4;
+}
+
+body
+{
+   background-color: #B4B4B4;
+   text-align: left;
+}
+
+input
+{
+   border: 1px solid #C5D6E2;
+   padding: 2px;
+   font-weight: normal;
+}
+
+.yui-panel-container.shadow .underlay
+{
+   display: none;
+}
+
+.yui-skin-sam .yui-panel
+{
+   border-style: none;
+}
+
+#loginform fieldset
+{
+	border : none;
+}
+
+.login-panel
+{
+   width: 502px;
+   height: 289px;
+   background: transparent url("../images/loginbg.png") no-repeat;
+   padding-left: 28px;
+   font-family: Arial,Helvetica,sans-serif;
+   font-size: 12px;
+   font-weight: bold;
+   color: #515354;
+   visibility: hidden;
+}
+
+.login-logo
+{
+  position: absolute;
+  top: 16px;
+  height: 64px;
+  width: 450px;
+  background: transparent url("../images/audit.png") no-repeat;
+}
+
+.login-button
+{
+   background-color: #f0f0f0;
+}
+
+.login-copyright
+{
+   font-family: Arial,Helvetica,sans-serif;
+   font-size: 11px;
+   font-weight: normal;
+   color: #959a9b;
+}
+
+.yui-skin-default #prompt {
+background-color:#E3EBEC;
+border-bottom:1px solid #C4C5C5;
+border-top:1px solid #C4C5C5;
+}
+
+.yui-skin-default .yui-panel {
+border-color:#808080;
+border-style:solid;
+border-width:1px 0;
+left:0;
+position:relative;
+top:0;
+z-index:1;
+}
+
+.yui-overlay, .yui-panel-container {
+position:absolute;
+visibility:hidden;
+z-index:2;
+}
+
+.yui-skin-default #prompt .hd {
+border-bottom:medium none;
+}
+.yui-skin-default .yui-panel .hd {
+border-bottom:1px solid #C4C5C5;
+font-size:123.1%;
+font-weight:bold;
+}
+.yui-skin-default .yui-panel .hd, .yui-skin-default .yui-panel .bdft, .yui-skin-default .yui-panel .ft {
+background:#E3EBEC none repeat scroll 0 0;
+border-bottom:1px solid #C4C5C5;
+border-left-color:#C4C5C5;
+border-right-color:#C4C5C5;
+color:#515D6B;
+}
+.yui-skin-default .yui-panel .hd, .yui-skin-default .yui-panel .bdft, .yui-skin-default .yui-panel .ft {
+text-align:center;
+}
+.yui-skin-default .yui-panel .hd {
+background:transparent url(../images/sprite.png) repeat-x scroll 0 -200px;
+color:#000000;
+font-size:93%;
+font-weight:bold;
+line-height:2;
+padding:0 10px;
+}
+.yui-skin-default .yui-panel .hd {
+border-bottom:1px solid #CCCCCC;
+}
+.yui-skin-default .yui-panel .hd, .yui-skin-default .yui-panel .bd, .yui-skin-default .yui-panel .ft {
+border-color:#808080;
+border-style:solid;
+border-width:0 1px;
+margin:0 -1px;
+}
+
+.yui-skin-default #prompt .bd {
+background-color:#E3EBEC;
+}
+.yui-skin-default #prompt .bd {
+padding:1em;
+text-align:center;
+}
+.yui-skin-default .yui-panel .bd {
+background-color:#F9FBFD;
+border-left-color:#C4C5C5;
+border-right-color:#C4C5C5;
+color:#515D6B;
+}
+.yui-skin-default .yui-panel .bd {
+padding:0;
+text-align:left;
+}
+.yui-skin-default .yui-panel .bd {
+padding:10px;
+}
+.yui-skin-default .yui-panel .bd, .yui-skin-default .yui-panel .ft {
+background-color:#F2F2F2;
+}
+.yui-skin-default .yui-panel .hd, .yui-skin-default .yui-panel .bd, .yui-skin-default .yui-panel .ft {
+border-color:#808080;
+border-style:solid;
+border-width:0 1px;
+margin:0 -1px;
+}
+

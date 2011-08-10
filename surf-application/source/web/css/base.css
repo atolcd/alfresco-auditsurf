@@ -1,0 +1,87 @@
+/**
+* Copyright (C) 2011 Atol Conseils et Développements.
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+* 02110-1301, USA. **/
+
+body 
+{
+   margin: 4px;
+   font-family: Trebuchet MS, Arial, sans-serif;
+   font-size: 1em;
+   color: #515D6B;
+}
+
+div
+{
+   font-family: Trebuchet MS, Arial, sans-serif;
+   color: #515D6B;
+}
+
+div.title
+{
+   font-weight: bold;
+   font-size: 1.2em;
+}
+
+div.titlebar
+{
+   font-weight: bold;
+   padding: 2px 0px 2px 8px;
+   background-color: #DCE4EB;
+   border-bottom: 1px solid #CCD4DB;
+}
+
+span
+{
+   font-size: 1em;
+}
+
+span.title
+{
+   font-weight: bold;
+   font-size: 1.2em;
+   color: #666677;
+}
+
+a:link, a:visited
+{
+   font-family: Trebuchet MS, Arial, sans-serif;
+   text-decoration: none;
+   color: #168ECE;
+}
+
+a:hover
+{
+   color: #168ECE;
+   text-decoration: underline;
+}
+
+form
+{
+   padding: 0px;
+   margin: 0px;
+}
+
+input
+{
+   font-family: Trebuchet MS, Arial, sans-serif;
+   font-size: 1em;
+   margin: 2px;
+   padding: 1px 2px 1px 2px;
+   color: #515D6B;
+   background-color: #F8FCFD;
+   border: 1px solid #CCD4DB;
+}

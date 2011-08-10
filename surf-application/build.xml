@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!--
+* Copyright (C) 2011 Atol Conseils et Développements.
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+* 02110-1301, USA.
+-->
+
+<project name="Audit-Surf WAR Build File" default="package-war" basedir=".">
+  <property name="module.id" value="auditsurf"/>
+
+  <!-- Path to the SDK -->
+  <property name="alfresco.lib.dir" value="/opt/alfresco-enterprise-sdk-3.4.3/lib"/>
+
+  <property name="project.dir" value="."/>
+  <property name="build.dir" value="${project.dir}/build"/>
+  <property name="dist.dir" value="${project.dir}/dist"/>
+  <property name="war.file.name" value="${module.id}.war"/>
+  <property name="jar.file" value="${module.id}.jar"/>
+  <property name="source.web" value="${project.dir}/source/web/"/>
+  <property name="tmp.dir" value="${build.dir}/${module.id}/"/>
+
+  <!-- YUI Compressor -->
+  <path id="yuicompressor.classpath">
+    <fileset dir="lib">
+      <include name="yuicompressor-2.4.2.jar"/>
+      <include name="yui-compressor-ant-task-0.5.jar"/>
+    </fileset>
+  </path>
+
+  <taskdef name="yuicompress" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+    <classpath>
+      <path refid="yuicompressor.classpath"/>
+    </classpath>
+  </taskdef>
+
+  <!-- Make Dirs -->
+  <target name="mkdirs" depends="clean">
+    <mkdir dir="${dist.dir}" />
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${build.dir}/lib" />
+  </target>
+
+
+  <!-- Clean -->
+  <target name="clean">
+    <delete dir="${dist.dir}" />
+    <delete dir="${build.dir}" />
+  </target>
+
+  <!-- Path -->
+  <path id="class.path">
+    <dirset dir="${build.dir}" />
+    <fileset dir="${alfresco.lib.dir}" includes="**/*.jar"/>
+  </path>
+
+  <!-- Compile -->
+  <target name="compile" depends="mkdirs">
+    <mkdir dir="${build.dir}/classes" />
+    <javac debug="on" classpathref="class.path" srcdir="${project.dir}/source/java" destdir="${build.dir}/classes" />
+  </target>
+
+  <!-- Package JAR -->
+  <target name="package-jar" depends="compile">
+    <jar destfile="${build.dir}/lib/${jar.file}" >
+      <fileset dir="${build.dir}/classes" excludes="**/*Test*" includes="**/*.class" />
+      <fileset dir="${project.dir}/source/java" />
+    </jar>
+  </target>
+
+  <!-- Assemble WAR -->
+  <target name="assemble-war" depends="package-jar">
+
+    <!-- copy all required files -->
+    <copy todir="${tmp.dir}/WEB-INF/classes">
+      <fileset dir="${project.dir}/config/" excludes="**/*.bak"/>
+    </copy>
+
+    <copy todir="${tmp.dir}">
+      <fileset dir="${source.web}"/>
+    </copy>
+
+    <!-- Minify JS -->
+    <yuicompress fromdir="${build.dir}/${module.id}/js" todir="${build.dir}/${module.id}/js" excludes="**/*-min.js" warn="yuicompress.warn">
+      <include name="**/*.js" />
+    </yuicompress>
+
+    <!-- add all JAR to WEB-INF/lib -->
+    <copy todir="${tmp.dir}/WEB-INF/lib">
+      <fileset dir="${build.dir}/lib/" includes="${jar.file}" />
+
+      <!-- JAR from SDK -->
+      <fileset dir="${alfresco.lib.dir}/server/" includes="alfresco-core-*.jar" />
+
+      <fileset dir="${alfresco.lib.dir}/server/dependencies/commons/"
+      includes="commons-beanutils-*.jar, commons-codec-*.jar, commons-collections-*.jar, commons-digester-*.jar,
+      commons-fileupload-*.jar, commons-httpclient-*.jar, commons-io-*.jar, commons-logging-*.jar" />
+
+      <fileset dir="${alfresco.lib.dir}/server/dependencies/"
+      includes="spring*.jar, log4j*.jar, json.jar, jta.jar, dom4j*.jar, freemarker*.jar,
+      rhino-*.jar, jaxen-*.jar, quartz-*.jar, geronimo-activation_*.jar, guessencoding-*.jar,
+      htmlparser-*.jar, urlrewritefilter-*.jar, org.springframework.*.jar" />
+
+      <fileset dir="${alfresco.lib.dir}/server/dependencies/spring-surf/"
+      excludes="*-tests.jar, spring-webeditor*..jar" />
+
+      <fileset dir="${alfresco.lib.dir}/server/dependencies/abdera/"
+      includes="**/abdera-*.jar, stax-api-*.jar, axiom-*.jar" />
+
+      <fileset dir="${alfresco.lib.dir}/server/dependencies/optional/"
+      includes="log4j-*.jar" />
+    </copy>
+  </target>
+
+  <!-- Package WAR -->
+  <target name="package-war" depends="assemble-war">
+    <war warfile="${dist.dir}/${war.file.name}" webxml="${tmp.dir}/WEB-INF/web.xml">
+      <fileset dir="${tmp.dir}" />
+    </war>
+
+    <!-- Clean after package WAR -->
+    <delete dir="${build.dir}" />
+  </target>
+</project>
