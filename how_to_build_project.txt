@@ -1,0 +1,27 @@
+# Atol Conseils & Développements
+# http://www.atolcd.com
+# http://labs.atolcd.com
+
+Check out the project :
+  svn checkout http://labs.atolcd.com/svn/auditsurf/trunk
+
+
+Ant build scripts are provided to build an Alfresco module (AMP file) and a webapp (WAR file).
+
+
+To build the AMP file, run the following command from the 'module-alfresco' directory*:
+  ant -Dalfresco.lib.dir="PATH-TO-THE-ALFRESCO-SDK-LIB-DIRECTORY"
+
+To build WAR file, run the following command from the 'surf-application' directory*:
+  ant -Dalfresco.lib.dir="PATH-TO-THE-ALFRESCO-SDK-LIB-DIRECTORY"
+
+
+
+For example:
+  ant -Dalfresco.lib.dir="C:\sdk\alfresco-enterprise-sdk-3.4.3\lib"
+
+
+
+
+* You can also modify build.xml files to set the "alfresco.lib.dir" property pointing to your
+alfresco sdk and just run the following command : ant
