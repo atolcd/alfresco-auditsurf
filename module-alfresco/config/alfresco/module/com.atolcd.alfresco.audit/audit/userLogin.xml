@@ -1,0 +1,48 @@
+<!--
+ * Copyright (C) 2011 Atol Conseils et Développements.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA. -->
+
+<Audit xmlns="http://www.alfresco.org/repo/audit/model/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.alfresco.org/repo/audit/model/3.2 alfresco-audit-3.2.xsd">
+
+    <DataExtractors>
+        <DataExtractor name="simpleValue" registeredName="auditModel.extractor.simpleValue" />
+        <DataExtractor name="siteValue" registeredName="auditModel.extractor.siteValue"/>
+    </DataExtractors>
+
+    <DataGenerators>
+        <DataGenerator name="personFullName"
+            registeredName="auditModel.generator.personFullName" />
+    </DataGenerators>
+
+
+    <PathMappings>
+        <PathMap source="/alfresco-api/post/AuthenticationService/authenticate" target="/UserLogin" />
+    </PathMappings>
+
+    <!--/alfresco-api/post/AuthenticationService/authenticate/no-error=null
+        /alfresco-api/post/AuthenticationService/authenticate/args/userName=admin-->
+
+    <Application name="UserLogin" key="UserLogin">
+        <AuditPath key="args">
+        	<AuditPath key="userName">
+            	<RecordValue key="value" dataExtractor="simpleValue" />
+            </AuditPath>
+        </AuditPath>
+    </Application>
+</Audit>

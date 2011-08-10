@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<!--
+* Copyright (C) 2011 Atol Conseils et Développements.
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301, USA. -->
+
+
+<beans>
+
+<!-- Audalf DataExtractors from workflowDefinitionId -->
+
+	<!-- Extractor -->
+    <bean name="auditModel.extractor.nodeFilterValue" class="com.atolcd.alfresco.audit.extractor.NodeDataExtractor">
+        <property name="registry" ref="auditModel.extractorRegistry" />
+
+        <property name="nodeService">
+        	<ref bean="NodeService" />
+        </property>
+    </bean>
+
+
+    <bean name="auditModel.extractor.siteValue" class="com.atolcd.alfresco.audit.extractor.SiteDataExtractor">
+        <property name="registry" ref="auditModel.extractorRegistry" />
+
+        <property name="siteService">
+        	<ref bean="SiteService" />
+        </property>
+
+        <property name="nodeService">
+        	<ref bean="NodeService" />
+        </property>
+    </bean>
+
+    <!-- Bean for Audit Queries -->
+    <bean id="beanAuditQueriesService" class="com.atolcd.alfresco.audit.repo.AuditQueriesServiceImpl">
+        <property name="auditService">
+          <ref bean="auditService" />
+        </property>
+    </bean>
+
+    <!-- Export -->
+       <bean id="webscript.com.atolcd.alfresco.audit.export.get" class="com.atolcd.alfresco.audit.web.scripts.ExportGet" parent="webscript">
+       <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+       </property>
+    </bean>
+
+    <!-- Workflow Info -->
+    <bean id="webscript.com.atolcd.alfresco.audit.workflowinfo.get" class="com.atolcd.alfresco.audit.web.scripts.WorkflowInfoGet" parent="webscript">
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+
+       <property name="workflowService">
+          <ref bean="WorkflowService" />
+       </property>
+
+       <property name="personService">
+          <ref bean="PersonService" />
+       </property>
+
+       <property name="namespaceService">
+          <ref bean="namespaceService" />
+       </property>
+    </bean>
+
+    <!-- Connection Logs -->
+   <bean id="webscript.com.atolcd.alfresco.audit.connectionlogs.get" class="com.atolcd.alfresco.audit.web.scripts.ConnectionLogsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+   </bean>
+
+
+    <!--        -->
+    <!-- Charts -->
+    <!--        -->
+
+   <!-- Documents : readings / creations / modifications -->
+   <bean id="webscript.com.atolcd.alfresco.audit.documents.get" class="com.atolcd.alfresco.audit.web.scripts.DocumentsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+   </bean>
+
+   <!-- Users Creations -->
+   <bean id="webscript.com.atolcd.alfresco.audit.userscreations.get" class="com.atolcd.alfresco.audit.web.scripts.UserCreationsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+   </bean>
+
+   <!-- Users Connections -->
+   <bean id="webscript.com.atolcd.alfresco.audit.usersconnections.get" class="com.atolcd.alfresco.audit.web.scripts.UserConnectionsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+   </bean>
+
+   <!-- Workflows Creations -->
+   <bean id="webscript.com.atolcd.alfresco.audit.workflowscreations.get" class="com.atolcd.alfresco.audit.web.scripts.WorkflowCreationsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+   </bean>
+
+
+    <!--          -->
+    <!-- DASHLETS -->
+    <!--          -->
+
+   <!-- Last Created Documents -->
+   <bean id="webscript.com.atolcd.alfresco.audit.lastcreateddocuments.get" class="com.atolcd.alfresco.audit.web.scripts.LastCreatedDocumentsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+    </bean>
+
+   <!-- Last Modified Documents -->
+   <bean id="webscript.com.atolcd.alfresco.audit.lastmodifieddocuments.get" class="com.atolcd.alfresco.audit.web.scripts.LastModifiedDocumentsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+    </bean>
+
+    <!-- Top Read Documents -->
+    <bean id="webscript.com.atolcd.alfresco.audit.topreaddocuments.get" class="com.atolcd.alfresco.audit.web.scripts.TopReadDocumentsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+    </bean>
+
+    <!-- Top Modified Documents -->
+    <bean id="webscript.com.atolcd.alfresco.audit.topmodifieddocuments.get" class="com.atolcd.alfresco.audit.web.scripts.TopModifiedDocumentsGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+    </bean>
+
+    <!-- Never Logged Users -->
+    <bean id="webscript.com.atolcd.alfresco.audit.neverloggedusers.get" class="com.atolcd.alfresco.audit.web.scripts.NeverLoggedUsersGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+
+       <property name="personService">
+          <ref bean="PersonService" />
+       </property>
+    </bean>
+
+    <!-- Last Created Users -->
+    <bean id="webscript.com.atolcd.alfresco.audit.lastcreatedusers.get" class="com.atolcd.alfresco.audit.web.scripts.LastCreatedUsersGet" parent="webscript">
+        <property name="auditQueriesService">
+            <ref bean="beanAuditQueriesService"/>
+        </property>
+
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+
+       <property name="personService">
+          <ref bean="PersonService" />
+       </property>
+    </bean>
+
+
+    <!-- Active Workflows -->
+    <bean id="webscript.com.atolcd.alfresco.audit.activeworkflows.get" class="com.atolcd.alfresco.audit.web.scripts.ActiveWorkflowsGet" parent="webscript">
+       <property name="nodeService">
+          <ref bean="NodeService" />
+       </property>
+
+       <property name="workflowService">
+          <ref bean="WorkflowService" />
+       </property>
+
+       <property name="personService">
+          <ref bean="PersonService" />
+       </property>
+
+       <property name="namespaceService">
+          <ref bean="namespaceService" />
+       </property>
+    </bean>
+
+
+    <!-- Connected Users -->
+    <bean id="webscript.com.atolcd.alfresco.audit.connectedusers.get" class="com.atolcd.alfresco.audit.web.scripts.ConnectedUsersGet" parent="webscript">
+       <property name="rawAuthenticationService">
+          <ref bean="authenticationService"/>
+       </property>
+    </bean>
+
+
+    <!-- Locked Documents -->
+    <bean id="webscript.com.atolcd.alfresco.audit.lockeddocuments.get" class="com.atolcd.alfresco.audit.web.scripts.LockedDocumentsGet" parent="webscript">
+       <property name="nodeService">
+          <ref bean="NodeService"/>
+       </property>
+
+       <property name="searchService">
+          <ref bean="SearchService"/>
+       </property>
+
+       <property name="fileFolderService">
+          <ref bean="FileFolderService"/>
+       </property>
+    </bean>
+
+
+    <!--          -->
+    <!-- JMX INFO -->
+    <!--          -->
+
+    <bean id="JMXInfoGet" class="com.atolcd.alfresco.audit.cmr.AbstractJMXInfoGet" parent="webscript"/>
+
+    <!-- Alfresco Information -->
+    <bean id="webscript.com.atolcd.alfresco.audit.alfrescoinfo.get" class="com.atolcd.alfresco.audit.web.scripts.AlfrescoInfoGet" parent="webscript">
+       <property name="descriptorService">
+          <ref bean="DescriptorService"/>
+       </property>
+    </bean>
+
+    <!-- Runtime Information-->
+    <bean id="webscript.com.atolcd.alfresco.audit.runtimeinfo.get" class="com.atolcd.alfresco.audit.web.scripts.RuntimeInfoGet" depends-on="JMXInfoGet"/>
+
+    <!-- dataBase Properties-->
+    <bean id="webscript.com.atolcd.alfresco.audit.databaseinfo.get" class="com.atolcd.alfresco.audit.web.scripts.DatabaseInfoGet" depends-on="JMXInfoGet"/>
+
+    <!-- Lucene Indexes -->
+    <bean id="webscript.com.atolcd.alfresco.audit.luceneindexesinfo.get" class="com.atolcd.alfresco.audit.web.scripts.LuceneIndexesInfoGet" depends-on="JMXInfoGet"/>
+
+    <!-- FileServer Information -->
+    <bean id="webscript.com.atolcd.alfresco.audit.fileserverinfo.get" class="com.atolcd.alfresco.audit.web.scripts.FileServerInfoGet" depends-on="JMXInfoGet"/>
+
+    <!-- System Properties -->
+    <bean id="webscript.com.atolcd.alfresco.audit.systemproperties.get" class="com.atolcd.alfresco.audit.web.scripts.SystemPropertiesGet" depends-on="JMXInfoGet"/>
+
+    <!-- ContentStore Information -->
+    <bean id="webscript.com.atolcd.alfresco.audit.contentstoreinfo.get" class="com.atolcd.alfresco.audit.web.scripts.ContentStoreInfoGet" depends-on="JMXInfoGet"/>
+
+    <!-- The ticket component.                                              -->
+    <!-- Used for reauthentication                                          -->
+    <bean id="ticketComponent" class="org.alfresco.repo.security.authentication.InMemoryTicketComponentImpl">
+        <property name="ticketsCache">
+            <ref bean="ticketsCache"/>
+        </property>
+        <!-- The period for which tickets are valid in XML duration format. -->
+        <!-- The default is P1H for one hour.                               -->
+        <property name="validDuration">
+            <value>PT1H</value>
+        </property>
+        <!-- Do tickets expire or live for ever?                            -->
+        <property name="ticketsExpire">
+            <value>true</value>
+        </property>
+        <!-- Are tickets only valid for a single use?                       -->
+        <property name="oneOff">
+            <value>false</value>
+        </property>
+        <!-- If ticketsEpire is true then how they should expire -->
+        <!-- AFTER_INACTIVITY, AFTER_FIXED_TIME, DO_NOT_EXPIRE  -->
+        <!-- The default is AFTER_FIXED_TIME -->
+        <property name="expiryMode">
+            <value>AFTER_FIXED_TIME</value>
+        </property>
+    </bean>
+
+    <!-- Add mimetype text/csv -->
+    <bean parent="webscripts.formatmap">
+        <property name="formats">
+            <props>
+                  <prop key="csv">text/csv</prop>
+            </props>
+          </property>
+    </bean>
+</beans>
