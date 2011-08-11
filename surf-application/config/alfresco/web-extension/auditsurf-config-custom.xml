@@ -1,0 +1,19 @@
+<alfresco-config>
+
+  <!-- example port config used to access remote Alfresco server (default is 8080) -->
+  <!--
+  <config evaluator="string-compare" condition="Remote">
+    <remote>
+       <endpoint>
+          <id>alfresco</id>
+          <name>Alfresco - user access</name>
+          <description>Access to Alfresco Repository WebScripts that require user authentication</description>
+          <connector-id>alfresco</connector-id>
+          <endpoint-url>http://localhost:8080/alfresco/s</endpoint-url>
+          <identity>user</identity>
+       </endpoint>
+    </remote>
+  </config>
+  -->
+
+</alfresco-config>

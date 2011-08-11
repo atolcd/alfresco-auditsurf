@@ -38,7 +38,10 @@
             
             <!-- AuditSurf Specific Configuration -->
             <value>classpath:alfresco/web-framework-config-application.xml</value>
-            
+
+            <!-- AuditSurf custom config -->
+            <value>classpath:alfresco/web-extension/auditsurf-config-custom.xml</value>
+
             <!-- Surf Autowire Support -->
             <value>webapp:WEB-INF/surf.xml</value>
          </list>
