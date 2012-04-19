@@ -22,7 +22,7 @@
   <property name="module.id" value="auditsurf-enterprise-v1.1.0"/>
 
   <!-- Path to the SDK -->
-  <property name="alfresco.lib.dir" value="/opt/alfresco-enterprise-sdk-3.4.3/lib"/>
+  <property name="alfresco.lib.dir" value="/opt/alfresco-enterprise-sdk-3.4/lib"/>
 
   <property name="project.dir" value="."/>
   <property name="build.dir" value="${project.dir}/build"/>

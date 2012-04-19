@@ -103,21 +103,22 @@ window.onload = function(){
 	
 	// Initialization of Lucene bloc (monitoring)
 	var bloc_lucene = document.getElementById('bloc_lucene');
-	var nb = 1;
-	for (var i=0; i<bloc_lucene.childNodes.length; i++){
-		// search elements of class lucene_li
-		if (bloc_lucene.childNodes[i].className == "lucene_li"){
-			for (var j=0; j<bloc_lucene.childNodes[i].childNodes.length; j++){
-				// search elements of class title_lucene
-				if (bloc_lucene.childNodes[i].childNodes[j].className == "title_lucene"){
-					// add action on the title
-					bloc_lucene.childNodes[i].childNodes[j].onclick = function() { Lucene(this.id); return false; };
-					break;
+	if (bloc_lucene) {
+		for (var i=0; i<bloc_lucene.childNodes.length; i++){
+			// search elements of class lucene_li
+			if (bloc_lucene.childNodes[i].className == "lucene_li"){
+				for (var j=0; j<bloc_lucene.childNodes[i].childNodes.length; j++){
+					// search elements of class title_lucene
+					if (bloc_lucene.childNodes[i].childNodes[j].className == "title_lucene"){
+						// add action on the title
+						bloc_lucene.childNodes[i].childNodes[j].onclick = function() { Lucene(this.id); return false; };
+						break;
+					}
 				}
 			}
 		}
 	}
-	
+
 	// Reset and initailize inputs
 	document.getElementById('d-decount').value = 0;
 	document.getElementById('w-decount').value = 0;

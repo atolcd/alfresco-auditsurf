@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 Atol Conseils et Développements.
+ * Copyright (C) 2012 Atol Conseils et Développements.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -63,8 +63,12 @@ public class LastCreatedDocumentsGet extends DeclarativeWebScript implements Ini
 			List<Map<String, Object>> entries = auditQueriesService.lastDocs();
 			List<NodeRef> lastup = new ArrayList<NodeRef>();
 
-			for (Map<String, Object> entry : entries)
-				lastup.add((NodeRef) entry.get("value"));
+			for (Map<String, Object> entry : entries) { 
+				NodeRef node = (NodeRef) entry.get("value");
+				if (this.nodeService.exists(node)) {
+					lastup.add(node);
+				}
+			}
 
 			// Insert into the map
 			model.put("LastCreatedDocs", lastup);

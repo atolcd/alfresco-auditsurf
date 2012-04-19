@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 Atol Conseils et Développements.
+ * Copyright (C) 2012 Atol Conseils et Développements.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -87,30 +87,36 @@ public class ActiveWorkflowsGet extends DeclarativeWebScript implements Initiali
 				List<WorkflowInstance> lwi = this.workflowService.getActiveWorkflows(w.getId());
 				if (lwi.size() > 0) {
 					for (WorkflowInstance wi : lwi) {
-						if (wi.active) {
-							String firstName = "", lastName = "", s_status = "";
+						Map<QName, Serializable> properties = getProcessProperties(wi.id);
+						if (properties != null) {
+							if (wi.active) {
+								// Get username, firstName and lastName
+								String username = "", firstName = "", lastName = "", s_status = "";
 
-							// Get username, firstName and lastName
-							String username = (String) this.nodeService.getProperty(wi.initiator, ContentModel.PROP_USERNAME);
-							if (username != null) {
-								if (personService.personExists(username)) {
-									NodeRef person = this.personService.getPerson(username);
-									if (this.nodeService.exists(person)) {// If the node exists
-										firstName = (String) this.nodeService.getProperty(person, ContentModel.PROP_FIRSTNAME);
-										lastName = (String) this.nodeService.getProperty(person, ContentModel.PROP_LASTNAME);
+								if (this.nodeService.exists(wi.initiator)) {
+									username = (String) this.nodeService.getProperty(wi.initiator, ContentModel.PROP_USERNAME);
+									if (username != null && personService.personExists(username)) {
+										NodeRef person = this.personService.getPerson(username);
+										if (this.nodeService.exists(person)) {// If the node exists
+											firstName = (String) this.nodeService.getProperty(person, ContentModel.PROP_FIRSTNAME);
+											lastName = (String) this.nodeService.getProperty(person, ContentModel.PROP_LASTNAME);
+										}
 									}
 								}
-							}
-							// Status
-							Map<QName, Serializable> properties = getProcessProperties(wi.id);
-							if (properties != null)
+
+								// Status
 								s_status = (String) properties.get(WorkflowModel.PROP_STATUS);
+								if (s_status == null)
+									s_status = "";
 
-							// Process Type
-							String processType = (String) wi.definition.getTitle();
+								// Process Type
+								String processType = (String) wi.definition.getTitle();
+								if (processType == null)
+									processType = "";
 
-							String[] wf_properties = { processType, firstName, lastName, username, s_status, wi.id };
-							workflowList.put(wi.startDate, wf_properties);
+								String[] wf_properties = { processType, firstName, lastName, username, s_status, wi.id };
+								workflowList.put(wi.startDate, wf_properties);
+							}
 						}
 					}
 				}

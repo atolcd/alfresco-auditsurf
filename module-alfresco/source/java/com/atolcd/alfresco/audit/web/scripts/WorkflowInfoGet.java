@@ -99,13 +99,15 @@ public class WorkflowInfoGet extends DeclarativeWebScript implements Initializin
 					putEntry("createdOn", new java.sql.Timestamp(wi.startDate.getTime()), "date", res);
 
 					// Initiator
-					String username = (String) this.nodeService.getProperty(wi.initiator, ContentModel.PROP_USERNAME);
-					if (username != null) {
-						NodeRef person = this.personService.getPerson(username);
-						if (this.nodeService.exists(person))// If the node
-															// exists
-							putEntry("initiator", (String) this.nodeService.getProperty(person, ContentModel.PROP_FIRSTNAME) + " "
-									+ (String) this.nodeService.getProperty(person, ContentModel.PROP_LASTNAME), "string", res);
+					String username = "";
+					if (this.nodeService.exists(wi.initiator)) {
+						username = (String) this.nodeService.getProperty(wi.initiator, ContentModel.PROP_USERNAME);
+						if (username != null) {
+							NodeRef person = this.personService.getPerson(username);
+							if (this.nodeService.exists(person))// If the node exists
+								putEntry("initiator", (String) this.nodeService.getProperty(person, ContentModel.PROP_FIRSTNAME) + " "
+										+ (String) this.nodeService.getProperty(person, ContentModel.PROP_LASTNAME), "string", res);
+						}
 					}
 
 					/*** Get properties of the workflow ***/
@@ -126,12 +128,14 @@ public class WorkflowInfoGet extends DeclarativeWebScript implements Initializin
 						if (owner != null) {
 							NodeRef actorRef = personService.getPerson(owner);
 
-							StringBuilder sb = new StringBuilder();
-							sb.append(nodeService.getProperty(actorRef, ContentModel.PROP_USERNAME)).append(" (")
-									.append(nodeService.getProperty(actorRef, ContentModel.PROP_FIRSTNAME)).append(" ")
-									.append(nodeService.getProperty(actorRef, ContentModel.PROP_LASTNAME)).append(")");
+							if (this.nodeService.exists(actorRef)) {
+								StringBuilder sb = new StringBuilder();
+								sb.append(nodeService.getProperty(actorRef, ContentModel.PROP_USERNAME)).append(" (")
+										.append(nodeService.getProperty(actorRef, ContentModel.PROP_FIRSTNAME)).append(" ")
+										.append(nodeService.getProperty(actorRef, ContentModel.PROP_LASTNAME)).append(")");
 
-							putEntry("handler", sb.toString(), "string", res);
+								putEntry("handler", sb.toString(), "string", res);
+							}
 						}
 					}
 				}
