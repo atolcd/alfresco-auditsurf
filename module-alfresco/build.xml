@@ -18,20 +18,18 @@
 * 02110-1301, USA.
 -->
 
-<project name="Audit AMP Build File" default="package-amp" basedir=".">
-  <property name="module.id" value="auditsurf-enterprise-v1.1.0"/>
-
-  <!-- Path to the SDK -->
-  <property name="alfresco.lib.dir" value="/opt/alfresco-enterprise-sdk-3.4/lib"/>
+<project name="Audit AMP Build Script" default="dist-amp" basedir=".">
+  <property file="module.properties" />
+  <property file="build.properties" />
 
   <property name="project.dir" value="."/>
   <property name="build.dir" value="${project.dir}/build"/>
   <property name="dist.dir" value="${project.dir}/dist"/>
-  <property name="jar.file" value="${build.dir}/lib/${module.id}.jar"/>
-  <property name="amp.file" value="${dist.dir}/${module.id}.amp"/>
+  <property name="jar.file" value="${build.dir}/lib/${module.id}-${module.version}.jar"/>
+  <property name="amp.file" value="${dist.dir}/${module.id}-v${module.version}.amp"/>
 
   <!-- Make Dirs -->
-  <target name="mkdirs" depends="clean">
+  <target name="prepare">
     <mkdir dir="${build.dir}" />
     <mkdir dir="${dist.dir}" />
     <mkdir dir="${build.dir}/lib" />
@@ -48,12 +46,11 @@
   <!-- Path -->
   <path id="class.path">
     <dirset dir="${build.dir}" />
-    <fileset dir="./lib/" includes="**/*.jar"/>
-    <fileset dir="${alfresco.lib.dir}" includes="**/*.jar"/>
+    <fileset dir="${alfresco.sdk.lib.dir}" includes="**/*.jar"/>
   </path>
 
   <!-- Compile -->
-  <target name="compile" depends="mkdirs">
+  <target name="compile">
     <mkdir dir="${build.dir}/classes" />
     <javac debug="on" classpathref="class.path" srcdir="${project.dir}/source/java" destdir="${build.dir}/classes" />
   </target>
@@ -67,7 +64,7 @@
   </target>
 
   <!-- Package AMP for Alfresco 3 -->
-  <target name="package-amp" depends="package-jar" description="Package the Module for Alfresco 3.x" >
+  <target name="build-amp" depends="package-jar" description="Package the Module for Alfresco 3.x" >
     <zip destfile="${amp.file}" >
       <fileset dir="${project.dir}" includes="web/**/*.*" />
       <fileset dir="${project.dir}/build" includes="lib/*.jar" />
@@ -76,4 +73,6 @@
       <fileset dir="${project.dir}/" includes="module.properties" />
     </zip>
   </target>
+  
+  <target name="dist-amp" depends="clean, prepare, build-amp" description="Build an AMP file" />
 </project>

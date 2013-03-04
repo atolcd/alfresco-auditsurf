@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="AuditSurf" default="dist-files" basedir=".">
+  <property name="dist.dir" value="${basedir}/dist"/>
+
+  <target name="prepare">
+    <mkdir dir="${dist.dir}" />
+  </target>
+
+  <target name="clean">
+    <delete dir="${dist.dir}" />
+  </target>
+
+  <target name="dist-files" depends="clean, prepare">
+    <ant antfile="build.xml" dir="${basedir}/module-alfresco" inheritrefs="true" target="build-amp">
+      <property name="dist.dir" value="../dist"/>
+      <property file="${basedir}/build.properties"/>
+    </ant>
+
+    <ant antfile="build.xml" dir="${basedir}/surf-application" inheritrefs="true" target="build-war">
+      <property name="dist.dir" value="../dist"/>
+      <property file="${basedir}/build.properties"/>
+    </ant>
+  </target>
+</project>

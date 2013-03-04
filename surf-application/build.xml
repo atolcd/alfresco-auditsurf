@@ -18,19 +18,16 @@
 * 02110-1301, USA.
 -->
 
-<project name="Audit-Surf WAR Build File" default="package-war" basedir=".">
-  <property name="module.id" value="auditsurf"/>
-
-  <!-- Path to the SDK -->
-  <property name="alfresco.lib.dir" value="/opt/alfresco-enterprise-sdk-3.4/lib"/>
+<project name="Audit-Surf WAR Build Script" default="dist-war" basedir=".">
+  <property file="build.properties" />
 
   <property name="project.dir" value="."/>
   <property name="build.dir" value="${project.dir}/build"/>
   <property name="dist.dir" value="${project.dir}/dist"/>
-  <property name="war.file.name" value="${module.id}.war"/>
-  <property name="jar.file" value="${module.id}.jar"/>
+  <property name="war.file.name" value="${war.name}.war"/>
+  <property name="jar.file" value="${war.file.name}.jar"/>
   <property name="source.web" value="${project.dir}/source/web/"/>
-  <property name="tmp.dir" value="${build.dir}/${module.id}/"/>
+  <property name="tmp.dir" value="${build.dir}/${war.name}/"/>
 
   <!-- YUI Compressor -->
   <path id="yuicompressor.classpath">
@@ -47,7 +44,7 @@
   </taskdef>
 
   <!-- Make Dirs -->
-  <target name="mkdirs" depends="clean">
+  <target name="prepare">
     <mkdir dir="${dist.dir}" />
     <mkdir dir="${build.dir}" />
     <mkdir dir="${build.dir}/lib" />
@@ -63,11 +60,11 @@
   <!-- Path -->
   <path id="class.path">
     <dirset dir="${build.dir}" />
-    <fileset dir="${alfresco.lib.dir}" includes="**/*.jar"/>
+    <fileset dir="${alfresco.sdk.lib.dir}" includes="**/*.jar"/>
   </path>
 
   <!-- Compile -->
-  <target name="compile" depends="mkdirs">
+  <target name="compile">
     <mkdir dir="${build.dir}/classes" />
     <javac debug="on" classpathref="class.path" srcdir="${project.dir}/source/java" destdir="${build.dir}/classes" />
   </target>
@@ -80,8 +77,8 @@
     </jar>
   </target>
 
-  <!-- Assemble WAR -->
-  <target name="assemble-war" depends="package-jar">
+  <!-- Package WAR -->
+  <target name="build-war" depends="package-jar">
 
     <!-- copy all required files -->
     <copy todir="${tmp.dir}/WEB-INF/classes">
@@ -93,7 +90,7 @@
     </copy>
 
     <!-- Minify JS -->
-    <yuicompress fromdir="${build.dir}/${module.id}/js" todir="${build.dir}/${module.id}/js" excludes="**/*-min.js" warn="yuicompress.warn">
+    <yuicompress fromdir="${build.dir}/${war.name}/js" todir="${build.dir}/${war.name}/js" excludes="**/*-min.js" warn="yuicompress.warn">
       <include name="**/*.js" />
     </yuicompress>
 
@@ -102,30 +99,28 @@
       <fileset dir="${build.dir}/lib/" includes="${jar.file}" />
 
       <!-- JAR from SDK -->
-      <fileset dir="${alfresco.lib.dir}/server/" includes="alfresco-core-*.jar" />
+      <fileset dir="${alfresco.sdk.lib.dir}/server/" includes="alfresco-core-*.jar" />
 
-      <fileset dir="${alfresco.lib.dir}/server/dependencies/commons/"
+      <fileset dir="${alfresco.sdk.lib.dir}/server/dependencies/commons/"
       includes="commons-beanutils-*.jar, commons-codec-*.jar, commons-collections-*.jar, commons-digester-*.jar,
       commons-fileupload-*.jar, commons-httpclient-*.jar, commons-io-*.jar, commons-logging-*.jar" />
 
-      <fileset dir="${alfresco.lib.dir}/server/dependencies/"
+      <fileset dir="${alfresco.sdk.lib.dir}/server/dependencies/"
       includes="spring*.jar, log4j*.jar, json.jar, jta.jar, dom4j*.jar, freemarker*.jar,
       rhino-*.jar, jaxen-*.jar, quartz-*.jar, geronimo-activation_*.jar, guessencoding-*.jar,
       htmlparser-*.jar, urlrewritefilter-*.jar, org.springframework.*.jar" />
 
-      <fileset dir="${alfresco.lib.dir}/server/dependencies/spring-surf/"
+      <fileset dir="${alfresco.sdk.lib.dir}/server/dependencies/spring-surf/"
       excludes="*-tests.jar, spring-webeditor*..jar" />
 
-      <fileset dir="${alfresco.lib.dir}/server/dependencies/abdera/"
+      <fileset dir="${alfresco.sdk.lib.dir}/server/dependencies/abdera/"
       includes="**/abdera-*.jar, stax-api-*.jar, axiom-*.jar" />
 
-      <fileset dir="${alfresco.lib.dir}/server/dependencies/optional/"
+      <fileset dir="${alfresco.sdk.lib.dir}/server/dependencies/optional/"
       includes="log4j-*.jar" />
     </copy>
-  </target>
 
-  <!-- Package WAR -->
-  <target name="package-war" depends="assemble-war">
+
     <war warfile="${dist.dir}/${war.file.name}" webxml="${tmp.dir}/WEB-INF/web.xml">
       <fileset dir="${tmp.dir}" />
     </war>
@@ -133,4 +128,6 @@
     <!-- Clean after package WAR -->
     <delete dir="${build.dir}" />
   </target>
+
+  <target name="dist-war" depends="clean, prepare, build-war" description="Build a WAR file" />
 </project>
